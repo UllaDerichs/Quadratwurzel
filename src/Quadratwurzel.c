@@ -1,7 +1,7 @@
 /*
  ============================================================================
  Name        : Quadratwurzel.c
- Author      : Norbert Kellersohn
+ Author      : Ursula Derichs
  Version     : 1.0
  Copyright   : Your copyright notice
  Description : Quadraturzel in C, Ansi89/90
@@ -10,72 +10,67 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-double squareRoot (double zahl, int iterationen, double eps)
+double squareRoot (double value, int iterations, double eps)
 {
-    double iterNeu, iterAlt, differenz;
-    unsigned int anzahl = 0;
-    // Iterationsanfang
-    iterAlt = zahl;
+    double iterNew, iter, diff;
+    unsigned int numInteration = 0;
+    // start iterations
+    iter = value;
     do {
-        // Nächsten Iterationsschritt berechnen
-        iterNeu = (iterAlt + zahl / iterAlt) / 2;
+        // calculate next iteration
+        iterNew = (iter + value / iter) / 2;
 
-        // Differenz bestimmen
-        differenz = iterAlt - iterNeu;
+        // what is the difference to the last result?
+        diff = iter - iterNew;
 
-        // Wenn Differenz kleiner Null -> VZ umkehren
-        if (differenz < 0)
-            differenz = -differenz;
+        // switch sign, if diff < 0
+        if (diff < 0)
+            diff = -diff;
 
-        // Anzahl erhöhen
-        anzahl++;
+        numInteration++;
 
-        // Iterationsergebnis als letzten Wert speichern
-        iterAlt = iterNeu;
-    } //while (!((differenz < eps) || (anzahl == iterationen)));
-    while ((differenz >= eps) && (anzahl < iterationen));
-    //Solange, bis Differenz kleiner Epsilon oder Anzahl gleich max. Anzahl
+        // store new iteration result
+        iter = iterNew;
+    } //while (!((diff < eps) || (numInteration == iterationen)));
+    while ((diff >= eps) && (numInteration < iterations));
 
-    return iterNeu;
+    return iterNew;
 }
 
 int main(void) {
 
-    // Variablen-Deklaration
+    unsigned int maxIterations;
+    double epsilon, value;
 
-	unsigned int maxAnzahl;
-	double epsilon, zahl;
-
-    // Zahl einlesen
+    // Read value
     printf("Geben Sie eine Zahl für die Berechnung der Quadratwurzel ein:\n");
     fflush(stdout);
-    scanf("%lf", &zahl);
+    scanf("%lf", &value);
     fflush(stdin);
 
-    // Wenn Zahl kleiner Null, dann Vorzeichen umkehren
-    if (zahl < 0)
+    // switch sign, if value < 0
+    if (value < 0)
     {
-        zahl = -zahl;
-    	printf ("Es wird die Quadratwurzel von %f berechent\n", zahl);
+        value = -value;
+        printf ("Es wird die Quadratwurzel von %f berechent\n", value);
     }
 
 
-    // Max. Anzahl Iterationen einlesen
+    // read max. number of iterations
     printf("Geben Sie die maximale Anzahl an Iterationsschritten ein:\n");
     fflush(stdout);
-    scanf("%u", &maxAnzahl);
+    scanf("%u", &maxIterations);
     fflush(stdin);
 
-    // Genauigkeit einlesen
+    // read precision
     printf("Geben Sie die Grösse für Epsilon ein:\n");
     fflush(stdout);
     scanf("%lf", &epsilon);
     fflush(stdin);
 
-    double wurzel = squareRoot (zahl, maxAnzahl, epsilon);
+    double sqroot = squareRoot (value, maxIterations, epsilon);
 
-    // Quadratwurzel ausgeben
-    printf("\nQuadratwurzel der Zahl %f ist %f \n", zahl, wurzel);
+    printf("\nQuadratwurzel der value %f ist %f \n", value, sqroot);
 
     return EXIT_SUCCESS;
 }
